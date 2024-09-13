@@ -210,3 +210,5 @@ result: the model with pre-trained weight is much better than with weight initia
  
 ### TODOLIST
 -[x] add yolo nano
+
+a mark lg
