@@ -1,0 +1,8 @@
+python-Levenshtein
+shapely
+librosa
+python_speech_features
+prefetch_generator
+munch
+pypinyin
+#spacy # spacy install https://www.cnblogs.com/my16/p/15167257.html

@@ -2,7 +2,7 @@ BELONGS: obd
 
 PATH:
   # '/media/lg/DataSet_E/datasets/'   '/media/lg/2628737E28734C35'  '/media/lg/DataSet_E/datasets/person/data_person' '/media/lg/DataSet_E/datasets/kitti/training/
-  INPUT_PATH: '/media/dell/data/coco/2017' #'/media/dell/data/voc' #   #'/media/dell/data/ocr/电表识别/电表图片' #'/media/dell/data/person/ai-auto-test-行人检测_清洗/'#
+  INPUT_PATH: '' #'/media/dell/data/voc' #   #'/media/dell/data/ocr/电表识别/电表图片' #'/media/dell/data/person/ai-auto-test-行人检测_清洗/'#
   LMDB_PATH: '/media/lg/2628737E28734C35/coco/{}2017_lmdb'
   LAB_PATH: ''
   CLASSES_PATH: 'lgdet/dataloader/classes/class_names_{}.txt'
@@ -16,18 +16,18 @@ TRAIN:
   EMA: 1
   EPOCH_SIZE: 300
   BATCH_BACKWARD_SIZE: 1  # BATCH_BACKWARD_SIZE: add the last 2 batch's loss, then backward once.
-  #'PERSON_COLLECT'  'AUTOAIR'   'VISDRONE' UCAS_AOD  'VOC'  'KITTI'  'COCO' 'COMPETITION' ‘ROCKPERSON'
-  TRAIN_DATA_FROM_FILE: [ 'COCO' ]
+  #'PERSON_COLLECT'  'AUTOAIR'   'VISDRONE' UCAS_AOD  'VOC'  'KITTI'  'COCO' 'COMPETITION' ‘ROCKPERSON' 'EXAMPLE'
+  TRAIN_DATA_FROM_FILE: [ 'EXAMPLE' ]
   USE_LMDB: 0
 
   # data aug:
   KEEP_DIFFICAULT: 0
-  MOSAIC: 1
-  DO_AUG: 0.1
-  HSV: 0.1
+  MOSAIC: 0
+  DO_AUG: 0 #0.1
+  HSV: 0 #0.1
   RESIZE: 0
   GRAY_BINARY: 0
-  LETTERBOX: 0
+  LETTERBOX: 1
   MAXMINSIZE: 0
   RELATIVE_LABELS: 0  #FALSE # generate a relative labels to 0-1
   AREAR_RATIO: 0 #0.05 #
@@ -57,15 +57,15 @@ TRAIN:
   # [loc_loss, obj_loss]: loc_loss: mse & iouloss | obj_loss: focalloss & ghm & bce |
   LOSSTYPE: [ 'iouloss', 'focalloss' ]
   EPOCH_CONTINUE: None
-  WARM_UP_STEP: 2100
-  SAVE_STEP: 4000
+  WARM_UP_STEP: 4 #2100
+  SAVE_STEP: 100 #4000
   EVALUATE_STEP: 1
 
   # tricks
   IOU_AWARE: 0
 
   # CUDA:
-  GPU_NUM: [ 0 ] #[] # if is [] means use CPU.
+  GPU_NUM: [0] #[] # if is [] means use CPU.
   DEVICE: 'gpu'
 
   # debug:
@@ -102,7 +102,7 @@ TEST:
 
   TEST_ONLY: 0
 
-  ONE_TEST: 0
+  ONE_TEST: 1
   ONE_TEST_TRAIN_STEP: 100
   ONE_TEST_TEST_STEP: 1
   ONE_NAME: [
@@ -110,7 +110,7 @@ TEST:
     #  ['000000000009.jpg', 'coco/imgs/train2017/000000000009.jpg', 'coco/labels/train2017_xml/000000000009.xml']
     #  ['000009', 'kitti/training/images/000009.png', 'kitti/training/labels/000009.xml']
 #          ['2010_002691.jpg', 'VOCdevkit/VOC2012/JPEGImages/2010_002691.jpg', 'VOCdevkit/VOC2012/Annotations/2010_002691.xml']
-    [ '000005.jpg', 'VOCdevkit/VOC2007/trainval/JPEGImages/000005.jpg', 'VOCdevkit/VOC2007/trainval/Annotations/000005.xml' ]
+    [ '000005.jpg', 'datasets/example_datas/JPEGImages/000005.jpg', 'datasets/example_datas/Annotations/000005.xml' ]
     #    [ '站2_transformer.jpg', 'images/站2_transformer.jpg', 'labels/站2_transformer.xml' ]
   ]
 

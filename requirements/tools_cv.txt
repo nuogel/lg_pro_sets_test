@@ -1,0 +1,12 @@
+opencv-python
+opencv-contrib-python
+matplotlib
+scikit-image
+pyyaml
+scikit-learn
+imgaug
+lmdb
+colorlog
+einops
+timm
+loguru

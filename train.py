@@ -15,7 +15,7 @@ def _parse_arguments():
     parser = ArgumentParser()
     parser.add_argument('--type', default='obd', type=str, help='yml_path')
     parser.add_argument('--model', type=str, help='yml_path')
-    parser.add_argument('--checkpoint', '--cp', default=1
+    parser.add_argument('--checkpoint', '--cp', default=0
                         , help='Path to the checkpoint to be loaded to the model')
     parser.add_argument('--data_path', '--dp', help='batch size')
     parser.add_argument('--epoch_size', '--ep', type=int, help='batch size')

@@ -1,0 +1,8 @@
+000005.jpg┣┫datasets/example_datas/JPEGImages/000005.jpg┣┫datasets/example_datas/Annotations/000005.xml
+000007.jpg┣┫datasets/example_datas/JPEGImages/000007.jpg┣┫datasets/example_datas/Annotations/000007.xml
+000009.jpg┣┫datasets/example_datas/JPEGImages/000009.jpg┣┫datasets/example_datas/Annotations/000009.xml
+000012.jpg┣┫datasets/example_datas/JPEGImages/000012.jpg┣┫datasets/example_datas/Annotations/000012.xml
+000016.jpg┣┫datasets/example_datas/JPEGImages/000016.jpg┣┫datasets/example_datas/Annotations/000016.xml
+000017.jpg┣┫datasets/example_datas/JPEGImages/000017.jpg┣┫datasets/example_datas/Annotations/000017.xml
+000019.jpg┣┫datasets/example_datas/JPEGImages/000019.jpg┣┫datasets/example_datas/Annotations/000019.xml
+000020.jpg┣┫datasets/example_datas/JPEGImages/000020.jpg┣┫datasets/example_datas/Annotations/000020.xml

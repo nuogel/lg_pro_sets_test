@@ -2,3 +2,6 @@
 *.pth
 tmp
 .idea
+NetWorks
+__pycache__
+*.datacache
