@@ -112,9 +112,9 @@ class YoloxLoss:
             self.grids[k] = grid
 
         output = output.view(batch_size, self.anc_num, n_ch, hsize, wsize)
-        output = (output.permute(0, 1, 3, 4, 2).reshape(batch_size, self.anc_num * hsize * wsize, -1))
-        grid = grid.view(1, -1, 2)
-
+        output = (output.permute(0, 1, 3, 4, 2).reshape(batch_size, self.anc_num * hsize * wsize, -1)).to(self.cfg.TRAIN.DEVICE)
+        grid = grid.view(1, -1, 2).to(self.cfg.TRAIN.DEVICE)
+        # print(output.device, ' ', self.cfg.TRAIN.DEVICE, '  ', grid.device)
         output[..., :2] = (output[..., :2] + grid) * stride
         output[..., 2:4] = torch.exp(output[..., 2:4]) * stride
         if output.type() == 'torch.cuda.HalfTensor':

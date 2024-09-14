@@ -19,6 +19,7 @@ def load_device(cfg):
         n_gpu_use = n_gpu
     device_ids = device[:n_gpu_use]
     device = torch.device('cuda:{}'.format(device[0]) if n_gpu_use > 0 else 'cpu')
+    print('using gpu device:', device)
     cfg.TRAIN.DEVICE = device
     multi_gpu=True if len(device_ids)>1 else False
     return device, device_ids,multi_gpu

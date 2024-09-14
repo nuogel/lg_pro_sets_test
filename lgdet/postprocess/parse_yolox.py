@@ -47,8 +47,8 @@ class ParsePredict_yolox:
             shape = grid.shape[:2]
             strides.append(torch.full((*shape, 1), stride))
 
-        grids = torch.cat(grids, dim=1).type(dtype)
-        strides = torch.cat(strides, dim=1).type(dtype)
+        grids = torch.cat(grids, dim=1).type(dtype).to(self.cfg.TRAIN.DEVICE)
+        strides = torch.cat(strides, dim=1).type(dtype).to(self.cfg.TRAIN.DEVICE)
 
         outputs[..., :2] = (outputs[..., :2] + grids) * strides
         outputs[..., 2:4] = torch.exp(outputs[..., 2:4]) * strides
