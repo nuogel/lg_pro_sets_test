@@ -11,7 +11,7 @@ PATH:
 
 TRAIN:
   # yolox  pvt_retinanet pvt_yolov5 yolov5 lrf300 fcos lrf512 yolov3  ssdvgg  retinanet yolonano  yolov2 yolov3 yolov3_tiny yolov3_tiny_shufflenet refinedet efficientdet yolov3_tiny_mobilenet yolov3_tiny_squeezenet fcos
-  MODEL: yolonano
+  MODEL: yolox
   TYPE: s
   EMA: 1
   EPOCH_SIZE: 300
@@ -29,7 +29,7 @@ TRAIN:
   GRAY_BINARY: 0
   LETTERBOX: 1
   MAXMINSIZE: 0
-  RELATIVE_LABELS: 0  #FALSE # generate a relative labels to 0-1
+  RELATIVE_LABELS: 0  #FALSE # generate a relative labels to 0-1, yolov5 loss must use: 1; yolox:0
   AREAR_RATIO: 0 #0.05 #
   MIN_AREA: 4 #100 #400 #4 #
   #[H,W]
@@ -45,8 +45,8 @@ TRAIN:
   SHOW_INPUT: -1  #10000  # #
 
   # optimizer:
-  OPTIMIZER: sgd #adamw'adam' #'SGD' #
-  LR_START: 0.01
+  OPTIMIZER: adam #adamw'adam' #'SGD' #
+  LR_START: 0.001
   WARMUP_BIAS_LR: 0.1
   LR_FINAL_RATIO: 0.01
   LR_SCHEDULE: 'cos' #['reduce', 'step', 'cos']
@@ -57,7 +57,7 @@ TRAIN:
   # [loc_loss, obj_loss]: loc_loss: mse & iouloss | obj_loss: focalloss & ghm & bce |
   LOSSTYPE: [ 'iouloss', 'focalloss' ]
   EPOCH_CONTINUE: None
-  WARM_UP_STEP: 4 #2100
+  WARM_UP_STEP: 40 #2100
   SAVE_STEP: 100 #4000
   EVALUATE_STEP: 1
 
@@ -65,7 +65,7 @@ TRAIN:
   IOU_AWARE: 0
 
   # CUDA:
-  GPU_NUM: [3] #[] # if is [] means use CPU.
+  GPU_NUM: [0] #[] # if is [] means use CPU.
   DEVICE: 'gpu'
 
   # debug:
@@ -102,7 +102,7 @@ TEST:
 
   TEST_ONLY: 0
 
-  ONE_TEST: 0
+  ONE_TEST: 1
   ONE_TEST_TRAIN_STEP: 100
   ONE_TEST_TEST_STEP: 1
   ONE_NAME: [
