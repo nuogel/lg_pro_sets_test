@@ -51,11 +51,11 @@ class YoloLoss:
 
         num_target = targets.shape[0]
         gain = torch.ones(6, device=targets.device)  # normalized to gridspace gain
-        gain[2:] = torch.tensor([W, H, W, H])  # xyxy gain
+        gain[2:] = torch.tensor([W, H, W, H]).to(targets.device)  # xyxy gain
         t = targets * gain
 
         self.anc_num = anchors.shape[0]  # number of anchors
-        at = torch.arange(self.anc_num).view(self.anc_num, 1).repeat(1, num_target)  # anchor tensor, same as .repeat_interleave(num_target)
+        at = torch.arange(self.anc_num).view(self.anc_num, 1).repeat(1, num_target).to(targets.device)  # anchor tensor, same as .repeat_interleave(num_target)
 
         # Match targets to anchors
         if num_target:  #
@@ -117,8 +117,8 @@ class YoloLoss:
             # t_cls = torch.zeros_like(pre_cls)  # targets
             # t_cls[range(num_target), tcls] = 1
             # lcls = self.bceloss(pre_cls, t_cls) # F.cross_entropy
-            assert pred_cls.sigmoid_tag is False
-            lcls = F.cross_entropy(pre_cls, tcls.type(torch.LongTensor).cuda())
+            # assert pred_cls.sigmoid_tag is False
+            lcls = F.cross_entropy(pre_cls, tcls.type(torch.LongTensor).to(self.cfg.TRAIN.DEVICE))
             if self.reduction == 'sum':
                 lcls = lcls / num_target  # BCE
             cls_score = ((pre_cls.max(-1)[1] == tcls).float()).mean()

@@ -54,7 +54,7 @@ class YoloLoss:
         t = targets * gain
 
         self.anc_num = anchors.shape[0]  # number of anchors
-        at = torch.arange(self.anc_num).view(self.anc_num, 1).repeat(1, num_target)  # anchor tensor, same as .repeat_interleave(num_target)
+        at = torch.arange(self.anc_num).view(self.anc_num, 1).repeat(1, num_target).to(self.cfg.TRAIN.DEVICE)  # anchor tensor, same as .repeat_interleave(num_target)
 
         # Match targets to anchors
         if num_target:  #
@@ -107,7 +107,7 @@ class YoloLoss:
             # t_cls[range(num_target), tcls] = 1
             # lcls = self.bceloss(pre_cls, t_cls) # F.cross_entropy
             assert pred_cls.sigmoid_tag is False
-            lcls = F.cross_entropy(pre_cls, tcls.type(torch.LongTensor).cuda())
+            lcls = F.cross_entropy(pre_cls, tcls.type(torch.LongTensor).to(self.cfg.TRAIN.DEVICE))
             if self.reduction == 'sum':
                 lcls = lcls / num_target  # BCE
             cls_score = ((pre_cls.max(-1)[1] == tcls).float()).mean()
@@ -120,16 +120,16 @@ class YoloLoss:
             else:
                 area_scale = 1.
 
-            if loc_losstype == 'mse':
+            # if loc_losstype == 'mse':
                 # MSE:
-                tobj[indices] = 1.0
-                twh = torch.log(tbox[..., 2:] / anchors + 1e-10)  # torch.log(gw / anchors[best_n][:, 0] + 1e-16)
-                lxy = self.mseloss(pre_xy, tbox[..., :2])
-                if self.multiply_area_scale: area_scale = area_scale.unsqueeze(-1).expand_as(pre_wh)
-                lwh = self.mseloss(pre_wh * area_scale, twh * area_scale)
-                lbox = (lxy + lwh)
-            else:
-                print('error loss type')
+            tobj[indices] = 1.0
+            twh = torch.log(tbox[..., 2:] / anchors + 1e-10)  # torch.log(gw / anchors[best_n][:, 0] + 1e-16)
+            lxy = self.mseloss(pre_xy, tbox[..., :2])
+            if self.multiply_area_scale: area_scale = area_scale.unsqueeze(-1).expand_as(pre_wh)
+            lwh = self.mseloss(pre_wh * area_scale, twh * area_scale)
+            lbox = (lxy + lwh)
+            # else:
+            #     print('error loss type')
 
         obj_mask = tobj > 0.
         noobj_mask = ~obj_mask

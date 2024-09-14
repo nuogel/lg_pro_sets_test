@@ -164,7 +164,6 @@ class YoloLoss:
             else:
                 t = targets[0]
                 offsets = 0
-
             # Define
             b, c = t[:, :2].long().T  # image, class
             gxy = t[:, 2:4]  # grid xy
@@ -174,11 +173,12 @@ class YoloLoss:
 
             # Append
             a = t[:, 6].long()  # anchor indices
-            indices.append((b, a, gj.clamp_(0, gain[3] - 1), gi.clamp_(0, gain[2] - 1)))  # image, anchor, grid indices
+            # print('gain[3],[2]',gain[3],gain[2])
+            # print('p[i].shape[3],[2]',p[i].shape[3],p[i].shape[2])
+            indices.append((b, a, gj.clamp_(0, W - 1), gi.clamp_(0, H - 1)))  # image, anchor, grid indices
             tbox.append(torch.cat((gxy - gij, gwh), 1))  # box
             anch.append(anchors[a])  # anchors
             tcls.append(c)  # class
-
         return tcls, tbox, indices, anch
 
     # def __call__(self, p, targets):  # predictions, targets, model
