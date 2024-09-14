@@ -1,0 +1,112 @@
+BELONGS: TTS #
+
+PATH:
+  INPUT_PATH: '/home/lg/datasets/'
+  CLASSES_PATH: 'lgdet/dataloader/classes/pinyin_dict.pth'
+  TMP_PATH: 'tmp/'
+  PARAMETER_PATH: 'tmp//checkpoint//checkpoint.parameter'
+  GENERATE_LABEL_SAVE_PATH: 'tmp//generated_labels//'
+
+
+TRAIN:
+  MODEL: tacotron2  #   #
+  EPOCH_SIZE: 200
+  BATCH_SIZE: 4
+  TRAIN_DATA_FROM_FILE: ['BZNSYP']
+  BATCH_BACKWARD_SIZE: 1
+
+  # optimizer:
+  OPTIMIZER: 'adam' #'SGD' #adam #adamw
+  LR_START: 0.001
+  LR_SCHEDULE: 'cos' #'reduce'# 'lr''reduce'  #
+  STEP_LR: 50
+  EMA: 0
+  WARM_UP_STEP: 1000
+  BETAS_ADAM: 0.9
+  WEIGHT_DECAY: 5e-4
+  # [loc_loss, obj_loss]
+  LOSSTYPE: ['mse', 'ghm'] #  giou focalloss mse bce
+  EPOCH_CONTINUE: None
+  SAVE_STEP: 2000
+
+  # Audio
+  #  rescale:  False  # Whether to rescale audio prior to preprocessing
+  #  rescaling_max:  0.999  # Rescaling value
+  #  trim_silence:  True  # Whether to clip silence in Audio (at beginning and end of audio only not the middle)
+  #  clip_mels_length:  True  # For cases of OOM (Not really recommended, working on a workaround)
+
+  # Mel spectrogram
+  n_mels: 80
+  n_fft:  1024  # Extra window size is filled with 0 paddings to match this parameter
+  hop_length:  200  # For 22050Hz 256 ~:   11.5 ms  ; for 16000 ,256:  16ms  # 192
+  win_length:  800  # For 22050Hz, 1024 ~:   46 ms (If None, win_size :   n_fft) # 800
+  sample_rate:  16000  # 22050, #22050 Hz (corresponding to ljspeech dataset)
+  frame_shift_ms:  None
+  preemphasis:  0.97  # preemphasis coefficient
+
+  # Limits
+  top_db: 15
+  max_db: 100
+  ref_db: 20
+  min_db:  -100
+  fmin:  75   # Set this to 75 if your speaker is male! if female, 125 should help taking off noise. (To test depending on dataset)
+  fmax:  7600
+
+  trim_fft_size: 512
+  trim_hop_size: 128
+  trim_top_db: 50
+
+  use_memory_mask: False
+
+  # optimization
+  mask_padding: 0
+  # audio
+  # symbols
+  symbols_embedding_dim: 512
+  encoder_kernel_size: 5
+  encoder_n_convolutions: 3
+  encoder_embedding_dim: 512
+
+  # attention location
+  attention_location_n_filters: 32
+  attention_location_kernel_size: 31
+  # decoder
+  n_frames_per_step: 1
+  decoder_rnn_dim: 1024
+  attention_rnn_dim: 1024
+  prenet_dim: 256
+  max_decoder_steps: 1000
+  gate_threshold: 0.6
+  decoder_n_lstms: 2
+  p_attention_dropout: 0.1
+  # postnet
+  postnet_embedding_dim: 512
+  postnet_n_convolutions: 5
+  postnet_kernel_size: 5  # size of postnet convolution filters for each layer
+
+  embedding_dim:  512   # dimension of embedding space
+  attention_dim:  128   # dimension of attention space
+  signal_normalization:  True
+  allow_clipping_in_normalization:  True   # Only relevant if mel_normalization :   True
+
+  # Griffin Lim
+  power:  1.2
+  griffin_lim_iters:  60
+
+  # CUDA:
+  GPU_NUM: [0] #[] # if is [] means use CPU.
+  DEVICE: 'gpu'
+
+  # debug:
+  LOG_FORMAT: '%(asctime)s - %(name)s - %(levelname)s - %(message)s'  # logging format
+
+
+TEST:
+  TEST_ONLY: 0 #FALSE #
+
+  ONE_TEST: 1 #
+  ONE_TEST_TRAIN_STEP: 500
+  ONE_TEST_TEST_STEP: 1
+  ONE_NAME: [
+  ['BZNSYP_16K/waves/000001.wav', '卡尔普陪外孙玩滑梯。']
+  ]

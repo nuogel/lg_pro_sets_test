@@ -1,0 +1,113 @@
+BELONGS: OCR
+
+PATH:
+  # '/media/lg/DataSet_E/datasets/'   '/media/lg/2628737E28734C35'  '/media/lg/DataSet_E/datasets/person/data_person' '/media/lg/DataSet_E/datasets/kitti/training/
+  INPUT_PATH: '/media/dell/data/coco/2017' #'/media/dell/data/voc/'  #'/media/dell/data/ocr/电表识别/电表图片' #
+  LMDB_PATH: '/media/lg/2628737E28734C35/coco/{}2017_lmdb'
+  LAB_PATH: ''
+  CLASSES_PATH: 'lgdet/dataloader/classes/class_names_{}.txt'
+  TMP_PATH: 'tmp/'
+  GENERATE_LABEL_SAVE_PATH: 'tmp/predicted_labels/'
+
+TRAIN:
+  MODEL: crnn
+  EMA: 1
+  EPOCH_SIZE: 300
+  BATCH_BACKWARD_SIZE: 1  # BATCH_BACKWARD_SIZE: add the last 2 batch's loss, then backward once.
+  TRAIN_DATA_FROM_FILE: [ 'COCO' ]
+  USE_LMDB: 0
+
+  # data aug:
+  KEEP_DIFFICAULT: 0
+  MOSAIC: 1
+  DO_AUG: 0.5
+  HSV: 0.1
+  RESIZE: 0
+  GRAY_BINARY: 0
+  LETTERBOX: 0
+  MAXMINSIZE: 0
+  RELATIVE_LABELS: 1  #FALSE # generate a relative labels to 0-1
+  AREAR_RATIO: 0 #0.05 #
+  MIN_AREA: 0 #100 #400 #4 #
+  #[H,W]
+  #[384, 960] [640, 640]#[1280, 1280] [416, 416] #[512, 768] # [1024,1920] #[800,1333]  #[256, 256] # # [H, W] the size inputted to net.KITTI[370, 1224],GOLDENRIDGE[1080,1920] the size of input images(VGA[376,672]) better to be 2^n---[last_feature_size*2^5
+  IMG_SIZE: [ 640, 640 ]
+  MULTI_SCALE: 0
+  MULTI_SCALE_SIZE: [ 320, 640 ] #(320-640)//32
+
+  SHOW_TRAIN_NAMES: 0 #TRUE #
+  WATCH_METIRICS: 1
+  WRITE_IMAGES: 20
+  WRITER: 'tensorboardX'
+  SHOW_INPUT: -1  #10000  # #
+
+  # optimizer:
+  OPTIMIZER: sgd #adamw'adam' #'SGD' #
+  LR_START: 0.01
+  WARMUP_BIAS_LR: 0.1
+  LR_FINAL_RATIO: 0.01
+  LR_SCHEDULE: 'cos' #'reduce'# 'lr''reduce'  #
+  STEP_LR: 50
+
+  WEIGHT_DECAY: 0.0005
+  MOMENTUM: 0.937
+  # [loc_loss, obj_loss]: loc_loss: mse & iouloss | obj_loss: focalloss & ghm & bce |
+  LOSSTYPE: [ 'iouloss', 'focalloss' ]
+  EPOCH_CONTINUE: None
+  WARM_UP_STEP: 2100
+  SAVE_STEP: 4000
+  EVALUATE_STEP: 2
+
+  # tricks
+  IOU_AWARE: 0
+
+  # CUDA:
+  GPU_NUM: [0] #[] # if is [] means use CPU.
+  DEVICE: 'gpu'
+
+  # debug:
+  LOG_FORMAT: '%(asctime)s - %(name)s - %(levelname)s - %(message)s'  # logging format
+  FMAP_ANCHOR_NUM: 3
+
+  # anchors
+  AUTO_ANCHORS: 0
+  ANCHORS: 'please see the util_prepare.py'
+
+  # pass object
+  PASS_OBJ: [ 'Bus_0', 'Bus_90', ]
+
+TEST:
+  # score type
+  MAP_FSCORE: 1 # 0 #[ 0: MAP; 1: FNSCORE]
+  SCORE_THRESH: 0.5
+
+  # NMS:
+  USE_MNS_CYTHON: 0
+  NMS_TYPE: 'default' #'SOFT_NMS' #'NMS' #
+  IOU_THRESH: 0.6
+  SOFNMS_THETA: 0.5
+
+  LETTERBOX: 1
+  DO_AUG: 0
+  GRAY_BINARY: 0
+  RESIZE: 0
+  MAXMINSIZE: 0
+
+  IMG_BLOCK: 0
+  SAVE_LABELS: 0
+  SHOW_TIMES: 100000
+
+  TEST_ONLY: 0
+
+  ONE_TEST: 0
+  ONE_TEST_TRAIN_STEP: 100
+  ONE_TEST_TEST_STEP: 1
+  ONE_NAME: [
+    #  ['000000000009.jpg', 'coco/imgs/train2017/000000000009.jpg', 'coco/labels/train2017_xml/000000000009.xml']
+    #  ['000009', 'kitti/training/images/000009.png', 'kitti/training/labels/000009.xml']
+    #      ['2010_002691.jpg', 'VOCdevkit/VOC2012/JPEGImages/2010_002691.jpg', 'VOCdevkit/VOC2012/Annotations/2010_002691.xml']
+    [ '000005.jpg', 'VOCdevkit/VOC2007/trainval/JPEGImages/000005.jpg', 'VOCdevkit/VOC2007/trainval/Annotations/000005.xml' ]
+    #    [ '站2_transformer.jpg', 'images/站2_transformer.jpg', 'labels/站2_transformer.xml' ]
+  ]
+
+  #'/media/dell/data/voc/VOCdevkit/VOC2012/JPEGImages/2010_002691.jpg'

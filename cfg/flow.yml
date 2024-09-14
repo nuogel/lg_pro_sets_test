@@ -1,0 +1,81 @@
+BELONGS: FLOW
+
+PATH:
+  INPUT_PATH: '' #'E:/datasets/UdacitySelfDriving/images/'
+  LAB_PATH: '' #'E:/datasets/UdacitySelfDriving/labels/'
+  CLASSES_PATH: 'dataloader/others/class_names.txt'
+  TMP_PATH: 'tmp/'
+  PARAMETER_PATH: 'tmp/checkpoint//checkpoint_{}.parameter'
+  GENERATE_LABEL_SAVE_PATH: 'tmp/predicted_labels/'
+
+
+TRAIN:
+  MODEL: flow_fgfa
+  EPOCH_SIZE: 4000
+  BATCH_SIZE: ''
+  BATCH_BACKWARD_SIZE: 1  # BATCH_BACKWARD_SIZE: add the last 2 batch's loss, then backward once.
+  TRAIN_DATA_FROM_FILE: ['FLYING_CHAIRS']
+  CLASSES: ['Others', 'Car', 'Person', 'Cycle'] #['Background','Car','Others1', 'Others2']  #['Car', 'Cyclist', 'Pedestrian', 'Others']#
+
+  # data aug:
+  DO_AUG: 0 #TRUE #
+  RESIZE: 1
+  RELATIVE_LABELS: 1  #FALSE # generate a relative labels to 0-1
+  AREAR_RATIO: 0.1 #0 #
+  MIN_AREA: 10 #0 #100 #400 #
+  IMG_SIZE:  [512, 768] #[1024,1920] #[384, 960] #[720,1024] #[H,W] #[256, 256] # [512,512] ## [H, W] the size inputted to net.KITTI[370, 1224],GOLDENRIDGE[1080,1920] the size of input images(VGA[376,672]) better to be 2^n---[last_feature_size*2^5
+  MULTI_SIZE_RATIO: [1] # [1, 0.9, 0.8...]
+
+  SHOW_TRAIN_NAMES: 0 #TRUE #
+  SHOW_INPUT:  0 #10000 #
+  SHOW_PREDICTED: 0
+
+
+  # optimizer:
+  OPTIMIZER: 'adam' #'SGD' #
+  LR_START: 0.001
+  STEP_LR: 60
+  LR_EXPONENTIAL_DECAY_RATE: 0.98 #lr_scheduler.ExponentialLR
+  BETAS_ADAM: 0.9
+  WEIGHT_DECAY: 4e-5
+  LOSSTYPE: 'focalloss' #'mse' #
+  EPOCH_CONTINUE: None
+  SAVE_STEP: 200
+
+  # CUDA:
+  GPU_NUM: [0] #[] # if is [] means use CPU.
+  DEVICE: 'gpu'
+
+  # debug:
+  LOG_FORMAT: '%(asctime)s - %(name)s - %(levelname)s - %(message)s'  # logging format
+  FMAP_ANCHOR_NUM: ''
+  ANCHORS: 'please see the util_prepare.py'
+
+
+TEST:
+  TEST_SET_RATIO: 0.1
+
+  SCORE_TYPE: 'mAP' # 'f' #
+  # NMS:
+  NMS_TYPE: 'SOFT_NMS'#'NMS'#
+  SCORE_THRESH: 0.5
+  IOU_THRESH: 0.5
+  SOFNMS_THETA: 0.5
+
+  DO_AUG: 0 #TRUE  #
+  RESIZE: 1  #FALSE #
+  IMG_BLOCK: 0
+  SAVE_LABELS: 0
+  SHOW_TIMES: 10000
+
+  TEST_ONLY: 0 #FALSE #
+
+  ONE_TEST: 0  #
+  ONE_TEST_TRAIN_STEP: 50
+  ONE_TEST_TEST_STEP: 1
+  ONE_NAME: [
+    #  ['000000', 'E://datasets//kitti//training//images//000000.png', 'E://datasets//kitti//training//labels\\000000.xml']
+    #      ['0000002_00005_d_0000014.jpg', 'E:/datasets/VisDrone2019/VisDrone2019-DET-train/images/0000002_00005_d_0000014.jpg', 'E:/datasets/VisDrone2019/VisDrone2019-DET-train/annotations/0000002_00005_d_0000014.txt']
+
+    #  ['P0001.png', 'E:/datasets/UCAS_AOD/CAR\\P0001.png', 'E:/datasets/UCAS_AOD/CAR\\P0001.txt']
+  ]

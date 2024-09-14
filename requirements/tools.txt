@@ -1,0 +1,17 @@
+opencv
+opencv-contrib-pythonmatplotlib
+scikit-image
+python-Levenshtein
+pyyaml
+scikit-learn
+shapely
+imgaug
+librosa
+lmdb
+python_speech_features
+prefetch_generator
+munch
+colorlog
+pypinying
+torchtext==0.10 #-i https://pypi.tuna.tsinghua.edu.cn/simple #https://github.com/pytorch/text/
+spacy # spacy install https://www.cnblogs.com/my16/p/15167257.html

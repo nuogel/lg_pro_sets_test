@@ -1,0 +1,1 @@
+None;F:/LG/OCR/WuXiaofeng/dataset/img/15829624016174018.png;F:/LG/OCR/WuXiaofeng/dataset/lab/15829624016174018.txt

@@ -1,12 +1,15 @@
-#### V1.1.0 STEADY : luogeng->master 
+#### V1.1.0 STEADY : luogeng->master 2021-4-16
 ### LuoGeng's Programs Set (Forbid Copying)
-This is a PyTorch implementation of ASR / OBD / SR /DENORSE /TRACK
+This is a PyTorch implementation of ASR/ TTS / OBD / SR /DENORSE /TRACK /FLOW
 #### ASR:
     CTC
     Seq2Seq
     RNN
     LSTM
     Transformer
+#### TTS:
+    Tacatron(faild)
+    
 #### OBD/OBC:
     YOLOv2
     YOLOV3
@@ -15,9 +18,17 @@ This is a PyTorch implementation of ASR / OBD / SR /DENORSE /TRACK
     YoloV3_Tiny_MobileNet
     YoloV3_Tiny_ShuffleNet
     YoloV3_MobileNet
+    YoloNano
     FCOS
     RefineDet
     MobileNetV3
+    SSDVGG
+    EfficientDet(BN)
+    EfficientDet(GN)
+    EfficientNet
+    RetinaNet
+    LRF300
+    LRF512
 #### SR:
     SRCNN
     FSRCNN
@@ -32,22 +43,44 @@ This is a PyTorch implementation of ASR / OBD / SR /DENORSE /TRACK
     
 #### TRACK:
     KCF
+    SORT
+    DEEP SORT
+    SiamRPN
+#### FLOW:
+    FLOW_FGFA
+    
 
 
 #### Runtime environment
 you need to install all the environment before you enjoy this code.
+pip install -r requirements.txt \
+-i http://mirrors.aliyun.com/pypi/simple/
+-i http://pypi.douban.com/simple/
 ```
-pytorch
-numpy
-pandas
 torch
 torchvision
+tensorflow
+matplotlib
+scikit-image
+keras
+opencv
+opencv-contrib-python
+pyyaml
+tensorboard
+scikit-learn
+shapely
+imgaug
+python-Levenshtein
+librosa
+lmdb
+colorlog
+python_speech_features
+prefetch_generator
+munch
 ...
 conda install -c conda-forge imgaug 
 ```
--------------------------
-Notice:
-if python-Levenshtein failed，then try Pipy, python-Levenshtein-wheels.
+Notice:if python-Levenshtein failed，then try Pipy, python-Levenshtein-wheels.
 
 
 #### Training Dataset
@@ -71,17 +104,24 @@ python test.py --yml_path xxx --checkpoint xxx
 OBD:
 The result of F1-score of Car in KITTI DATA SET.
 
-networks | input size |  F1-SCORE |mAP| weight size| PS
- --- | --- | --- |  --- |---|---
-yolov2|512x768|0.86|X|58.5 M|used 16 Anchors.
-yolov3|384x960|0.9|X|136 M|收敛快，效果好
-yolov3_tiny | 512x768| 0.857 |0.76571836| 33 M|
-yolov3_tiny_squeezenet | 384x960 | 0.844 |X|5.85 M|收敛快，效果好
-yolov3_tiny_mobilenet|512x768|0.836|X|3.37 M|
-yolov3_tiny_shufflenet|512x768|0.790|0.672|686 KB|
-refinedet | 512x768 | 0.91|X|129 M|收敛快，效果好
-efficientdet_b0|512x768|0.9|X|42.7M|收敛快，效果好
-ssd|512x768|0.8904|X|94.7 M|收敛慢，效果好
+networks |dataset| input size |  F1-SCORE |mAP0.5| weight size| PS
+ --- | --- |--- | --- |  --- |---|---
+yolov2|KITTI|512x768|0.86|X|58.5 M|used 16 Anchors.
+yolov3|KITTI|384x960|0.9|X|136 M|收敛快，效果好
+yolov3_tiny |KITTI| 512x768| 0.857 |0.76571836| 33 M|
+yolov3_tiny_squeezenet |KITTI| 384x960 | 0.844 |X|5.85 M|收敛快，效果好
+yolov3_tiny_mobilenet|KITTI|512x768|0.836|X|3.37 M|
+yolov3_tiny_shufflenet|KITTI|512x768|0.790|0.672|686 KB|
+yolonano|KITTI|X|X|...|11M
+refinedet |KITTI| 512x768 | 0.91|X|129 M|收敛快，效果好
+efficientdet_b0|KITTI|512x768|0.9|X|42.7M|收敛快，效果好
+ssd|KITTI|512x768|0.8904|X|94.7 M|收敛慢，效果好
+yolov5s-lg|voc+|640x640|...|0.489(resize onley)->0.52(masic only)|20|debug中
+yolov5s-lg|VOC+|640x640|- | 0.773(0.492:0.5-0.90)|20|pretrained by coco
+
+
+
+
 
 以上分数是在 SCORE_THRESH: 0.7 下得到的，以yolov3_tiny为例: 
 SCORE_THRESH: 0.7 :
@@ -112,16 +152,61 @@ Transformer |0.1|58.5 M|XXX
 
 SR: 
 
-dataset:youku
+dataset:youku (1920X1080)
 
-networks | PSNR |weight size| PS
- --- | --- | --- |  --- 
-SRCNN|X|X|XXX
-FSRCNN|X|X|XXX
-VDSR |33.66|X|XXX
+networks | PSNR |weight size| one image time | ps
+ --- | --- | --- |  --- | ---
+SRCNN|X|X|0.4s|
+FSRCNN|X|X|0.3s
+VDSR |33.66|X|0.47s
 EDSR |30.97|X|XXX
+DBPN |X|X|X| 
+RDN |35.66| XX|0.8s |add data augmentation; 38.5 on youku200-250; with out data aug fells more comfortable.
 RCAN |35.73| XX|XXX 
+RCAN |36.60|XX| xx|add data augmentation; 38.35 on youku200-250
 CBDNET |XX| XX|XXX 
-RDN |35.5| XX|XXX 
+ESRGAN|X|X|X
+SRFBN|X|X|XXXXxxxx
+
+PS:DBPN set:max parameters for DBPN with 11GB. 4 layers(7 is not available);base_filter=28;
 
 
+
+### Contrast of training speed(2020.10.10版本)
+items| value
+--- | ---
+model|yolo_tiny
+batch size|4
+gpu|nvidia-2080ti
+number_works|~
+
+dataloader only| 0 number works| 8 number works| 
+---|---|---
+mosaic&affine|7it/s|19it/s
+masic only| 3.5it/s|8it/s
+resize only|17it/s|40it/s
+
+training items|0 number works| 8 number works| 
+---|---|---
+train without dataloader| 7it/s|7it/s(same)
+dataloader+forward&backward|3.5it/s|6.8it/s
+forward only|19it/s| the same
+
+result：the backward waste a lot of time.
+
+
+### pre-trained or not 
+model | data set| epochs| lr schedule|pre-trained| MAP50 | MAP50:90 |F-score
+---|---|---|---|---|---|---|---
+lrf300|VOC2017|230|reduce|-|-| 32.5%| 0.457
+lrf300|VOC2017|80|reduce| -|-| 58%|0.69
+yolov5s-lg|VOC2017|100|cos |coco| 0.773|0.492|-
+
+
+result: the model with pre-trained weight is much better than with weight initiation schedule.
+### Problems
+1、when I train YOLOV3 with  voc2007 with focal loss, the obj loss is not going down, it seems that the gradient vanished.
+ 
+ 
+### TODOLIST
+-[x] add yolo nano

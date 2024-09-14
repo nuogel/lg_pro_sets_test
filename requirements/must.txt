@@ -1,0 +1,6 @@
+torch
+torchvision
+tensorflow
+tensorboard
+tensorboardX
+keras

@@ -1,0 +1,1 @@
+python train.py --type IMC --model vit  --cp 1 --bz 32 --nw 8 --ema 0 --autoamp 1

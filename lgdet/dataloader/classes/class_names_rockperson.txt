@@ -1,0 +1,9 @@
+background
+person
+人体,person
+行人,person
+\ufeffperson,person
+person ,person
+通用-行人,person
+人体-睡岗,person
+人体-工作,person

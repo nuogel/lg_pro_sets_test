@@ -1,0 +1,60 @@
+BELONGS: SRDN
+
+PATH:
+  INPUT_PATH: '/media/lg/SSD_WorkSpace/LG/GitHub/lg_pro_sets/saved/denoise/'
+  LAB_PATH: ''
+  TMP_PATH: 'tmp/'
+  PARAMETER_PATH: 'tmp//checkpoint//checkpoint.parameter'
+  GENERATE_LABEL_SAVE_PATH: 'tmp//generated_labels//'
+
+TRAIN:
+  MODEL: edsr   #rdn # [ #srfbn #rcan #dbpn #edsr #fsrcnn #srcnn #vdsr] #[#cbdnet  #  espcn #dncnn #]
+  EPOCH_SIZE: 4000
+  BATCH_SIZE: 1
+  BATCH_BACKWARD_SIZE: 16 # BATCH_BACKWARD_SIZE: add the last 2 batch's loss, then backward once.【!!That will cost GPU  to save parameters】
+  TRAIN_DATA_FROM_FILE: [RED4, YOUKU]    # [, CCPD]FILMS #
+  EMA: 0
+  # aug
+  UPSCALE_FACTOR: 4
+  IMG_SIZE: [512, 512] #[1920, 1080] ##[1280, 720] #[200, 100] #[64, 64] #[512, 384]  #[960, 384] #[W,H] # [1216, 554] #
+  PIXCELS_NORM: [0., 255.]  # [mean, std] #must be float.
+  INPUT_FROM_TARGET: 0
+  TARGET_TRANSFORM: 0 # pre dealing the target image.
+  INPUT_TRANSFORM: 0
+  SHOW_INPUT: 0 #10000  #
+  SHOW_TARGET: 0 # 10000 #
+  SHOW_PREDICT: 1 #10000 #
+
+  # optimizer:
+  OPTIMIZER: 'adam' #'sgd' #
+  LR_START: 0.001
+  STEP_LR: 100
+  LR_EXPONENTIAL_DECAY_RATE: 0.98
+  BETAS_ADAM: 0.9
+  WEIGHT_DECAY: 0
+  LOSSTYPE: 'MSE'  #'l1'  #
+  EPOCH_CONTINUE: None
+  SAVE_STEP: 500
+
+  # CUDA:
+  GPU_NUM: [0] #[] # if is [] means use CPU.
+  DEVICE: 'gpu'
+  # debug:
+  LOG_FORMAT: '%(asctime)s - %(name)s - %(levelname)s - %(message)s'  # logging format
+
+
+TEST:
+  TEST_SET_RATIO: 0.1
+
+  SAVE_LABELS: 1
+  SHOW_EVAL_TIME: 10000
+
+  TEST_ONLY: 0
+
+  ONE_TEST: 1
+  ONE_TEST_TRAIN_STEP: 50
+  ONE_TEST_TEST_STEP: 1
+  ONE_NAME: [
+              ['rcan_960x540x4.png', 'rcan_960x540x4.png','rcan_960x540x4.png']
+#  ['Youku_00099_l_050.png','E:/datasets/SR/youku/youku_00000_00149_l/Youku_00099_l/Youku_00099_l_050.png','E:/datasets/SR/youku/youku_00000_00149_h_GT/Youku_00099_h_GT/Youku_00099_h_GT_050.png']
+  ]

@@ -1,0 +1,1 @@
+python train.py --type imc --model resnet  --ep 110 --cp 1 --bz 48 --nw 8 --ema 0 --autoamp 1 --to 0
