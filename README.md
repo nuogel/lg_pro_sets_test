@@ -1,4 +1,6 @@
 #### V1.1.0 STEADY : luogeng->master 2021-4-16
+#### V1.2.0 STEADY : luogeng->master 2024-9-14
+
 ### LuoGeng's Programs Set (Forbid Copying)
 This is a PyTorch implementation of ASR/ TTS / OBD / SR /DENORSE /TRACK /FLOW
 #### ASR:
