@@ -111,7 +111,7 @@ def shift(shape, stride, anchors):
     shift_x = (np.arange(0, shape[1]) + 0.5) * stride
     shift_y = (np.arange(0, shape[0]) + 0.5) * stride
 
-    shift_x, shift_y = np.meshgrid(shift_x, shift_y)
+    shift_x, shift_y = np.meshgrid(shift_x, shift_y,indexing='ij')
 
     shifts = np.vstack((
         shift_x.ravel(), shift_y.ravel(),

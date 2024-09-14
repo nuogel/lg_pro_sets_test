@@ -51,11 +51,11 @@ class YoloLoss:
 
         num_target = targets.shape[0]
         gain = torch.ones(6, device=targets.device)  # normalized to gridspace gain
-        gain[2:] = torch.tensor([W, H, W, H])  # xyxy gain
+        gain[2:] = torch.tensor([W, H, W, H]).to(targets.device)  # xyxy gain
         t = targets * gain
 
         self.anc_num = anchors.shape[0]  # number of anchors
-        at = torch.arange(self.anc_num).view(self.anc_num, 1).repeat(1, num_target)  # anchor tensor, same as .repeat_interleave(num_target)
+        at = torch.arange(self.anc_num).view(self.anc_num, 1).repeat(1, num_target).to(targets.device)  # anchor tensor, same as .repeat_interleave(num_target)
 
         # Match targets to anchors
         if num_target:  #
@@ -104,6 +104,7 @@ class YoloLoss:
         metrics = {}
         lcls, lbox, lobj = [torch.FloatTensor([0]).to(self.device) for _ in range(3)]
         pred_conf, pred_cls, pred_xy, pred_wh, pred_iou, pre_relative_box = self.parsepredict.parser._parse_yolo_predict_fmap(f_map, f_id)
+        print('pred_cls type0',pred_cls)
         pre_obj, pre_cls, pre_loc_xy, pre_loc_wh = pred_conf.value, pred_cls.value, pred_xy.value, pred_wh.value
         with torch.no_grad():
             tcls, tbox, indices, indices_ignore, anchors = self.build_targets(pre_obj, labels, f_id)  # targets
@@ -117,8 +118,11 @@ class YoloLoss:
             # t_cls = torch.zeros_like(pre_cls)  # targets
             # t_cls[range(num_target), tcls] = 1
             # lcls = self.bceloss(pre_cls, t_cls) # F.cross_entropy
-            assert pred_cls.sigmoid_tag is False
-            lcls = F.cross_entropy(pre_cls, tcls.type(torch.LongTensor).cuda())
+            # assert pred_cls.sigmoid_tag is False
+            print('pre_cls type',pre_cls.type)
+            print('pre_cls',pre_cls)
+            print('tcls',tcls)
+            lcls = F.cross_entropy(pre_cls, tcls.type(torch.LongTensor).to(self.cfg.TRAIN.DEVICE))
             if self.reduction == 'sum':
                 lcls = lcls / num_target  # BCE
             cls_score = ((pre_cls.max(-1)[1] == tcls).float()).mean()

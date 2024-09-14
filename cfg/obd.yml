@@ -11,7 +11,7 @@ PATH:
 
 TRAIN:
   # yolox  pvt_retinanet pvt_yolov5 yolov5 lrf300 fcos lrf512 yolov3  ssdvgg  retinanet yolonano  yolov2 yolov3 yolov3_tiny yolov3_tiny_shufflenet refinedet efficientdet yolov3_tiny_mobilenet yolov3_tiny_squeezenet fcos
-  MODEL: yolox
+  MODEL: yolonano
   TYPE: s
   EMA: 1
   EPOCH_SIZE: 300
@@ -65,7 +65,7 @@ TRAIN:
   IOU_AWARE: 0
 
   # CUDA:
-  GPU_NUM: [0] #[] # if is [] means use CPU.
+  GPU_NUM: [3] #[] # if is [] means use CPU.
   DEVICE: 'gpu'
 
   # debug:
@@ -102,7 +102,7 @@ TEST:
 
   TEST_ONLY: 0
 
-  ONE_TEST: 1
+  ONE_TEST: 0
   ONE_TEST_TRAIN_STEP: 100
   ONE_TEST_TEST_STEP: 1
   ONE_NAME: [

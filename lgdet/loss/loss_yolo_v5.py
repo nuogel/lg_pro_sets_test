@@ -145,6 +145,7 @@ class YoloLoss:
 
             # Match targets to anchors
             t = targets * gain
+            print('t0:',t)
             if nt:
                 # Matches
                 r = t[:, :, 4:6] / anchors[:, None]  # wh ratio
@@ -165,8 +166,11 @@ class YoloLoss:
                 t = targets[0]
                 offsets = 0
 
+            print('t1:',t)
+
             # Define
             b, c = t[:, :2].long().T  # image, class
+            print('b:',b)
             gxy = t[:, 2:4]  # grid xy
             gwh = t[:, 4:6]  # grid wh
             gij = (gxy - offsets).long()
@@ -174,10 +178,14 @@ class YoloLoss:
 
             # Append
             a = t[:, 6].long()  # anchor indices
-            indices.append((b, a, gj.clamp_(0, gain[3] - 1), gi.clamp_(0, gain[2] - 1)))  # image, anchor, grid indices
+            print('gain[3],[2]',gain[3],gain[2])
+            print('p[i].shape[3],[2]',p[i].shape[3],p[i].shape[2])
+            indices.append((b, a, gj.clamp_(0, W - 1), gi.clamp_(0, H - 1)))  # image, anchor, grid indices
             tbox.append(torch.cat((gxy - gij, gwh), 1))  # box
             anch.append(anchors[a])  # anchors
             tcls.append(c)  # class
+        
+            print('number of targets:', indices[i][0].shape[0])
 
         return tcls, tbox, indices, anch
 
@@ -207,6 +215,7 @@ class YoloLoss:
             tobj = torch.zeros_like(pi[..., 0], device=self.device)  # target obj
 
             n = b.shape[0]  # number of targets
+            print('number of targets:', b.shape[0])
             if n:
                 ps = pi[b, a, gj, gi]  # prediction subset corresponding to targets
 

@@ -133,7 +133,7 @@ class ParsePredict_yolo:
             return pred_conf.value, pred_cls.value, pre_box
 
     def _make_grid(self, nx=20, ny=20):
-        yv, xv = torch.meshgrid([torch.arange(ny), torch.arange(nx)])
+        yv, xv = torch.meshgrid([torch.arange(ny), torch.arange(nx)],indexing='ij')
         return torch.stack((xv, yv), 2).view((1, 1, ny, nx, 2)).float()
 
     def _make_anc(self, f_id, W, H):
