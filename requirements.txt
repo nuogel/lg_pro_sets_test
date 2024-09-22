@@ -1,2 +1,4 @@
 -r requirements/must.txt
--r requirements/tools.txt
+-r requirements/onnx_trt.txt
+-r requirements/tools_cv.txt
+-r requirements/tools_others.txt

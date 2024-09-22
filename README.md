@@ -55,9 +55,11 @@ This is a PyTorch implementation of ASR/ TTS / OBD / SR /DENORSE /TRACK /FLOW
 
 #### Runtime environment
 you need to install all the environment before you enjoy this code.
-pip install -r requirements.txt \
--i https://mirrors.aliyun.com/pypi/simple/
+```commandline
+pip3 install -r requirements.txt -i https://mirrors.aliyun.com/pypi/simple/
 -i https://pypi.douban.com/simple/
+```
+
 ```
 torch
 torchvision
